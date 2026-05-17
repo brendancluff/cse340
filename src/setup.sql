@@ -34,3 +34,138 @@ VALUES
     'hello@unityserve.org',
     'unityserve-logo.png'
 );
+-- ========================================
+-- Projects Table
+-- ========================================
+
+CREATE TABLE projects (
+    project_id SERIAL PRIMARY KEY,
+    organization_id INTEGER NOT NULL,
+    title VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR(150) NOT NULL,
+    project_date DATE NOT NULL,
+    CONSTRAINT fk_projects_organization
+        FOREIGN KEY (organization_id)
+        REFERENCES organization(organization_id)
+        ON DELETE CASCADE
+);
+
+-- ========================================
+-- Insert sample data: Projects
+-- ========================================
+
+INSERT INTO projects
+(organization_id, title, description, location, project_date)
+VALUES
+
+-- BrightFuture Builders
+(
+    1,
+    'Community Playground Build',
+    'Help construct a new playground for local families and children.',
+    'Mesa Community Park',
+    '2026-06-10'
+),
+(
+    1,
+    'Neighborhood Bench Installation',
+    'Install public benches in community gathering areas.',
+    'Downtown Mesa',
+    '2026-06-17'
+),
+(
+    1,
+    'Senior Center Repairs',
+    'Assist with painting and repairs for the senior center.',
+    'Mesa Senior Center',
+    '2026-06-24'
+),
+(
+    1,
+    'Community Garden Fence Build',
+    'Build fencing around the community garden.',
+    'East Mesa Garden',
+    '2026-07-01'
+),
+(
+    1,
+    'Habitat Cleanup Day',
+    'Clean and restore outdoor recreation areas.',
+    'Red Mountain Area',
+    '2026-07-08'
+),
+
+-- GreenHarvest Growers
+(
+    2,
+    'Urban Garden Planting',
+    'Plant vegetables and flowers in neighborhood gardens.',
+    'Queen Creek Community Garden',
+    '2026-07-12'
+),
+(
+    2,
+    'Composting Workshop',
+    'Teach families sustainable composting practices.',
+    'Queen Creek Library',
+    '2026-07-19'
+),
+(
+    2,
+    'Farmers Market Support',
+    'Assist local farmers during the weekly market.',
+    'Downtown Market',
+    '2026-07-26'
+),
+(
+    2,
+    'Tree Planting Initiative',
+    'Plant shade trees in public areas.',
+    'San Tan Park',
+    '2026-08-02'
+),
+(
+    2,
+    'Food Donation Harvest',
+    'Harvest and package produce for local shelters.',
+    'Community Farm',
+    '2026-08-09'
+),
+
+-- UnityServe Volunteers
+(
+    3,
+    'School Supply Drive',
+    'Sort and distribute donated school supplies.',
+    'Mesa Elementary School',
+    '2026-08-15'
+),
+(
+    3,
+    'Holiday Food Packing',
+    'Pack food boxes for families during the holiday season.',
+    'Community Outreach Center',
+    '2026-08-22'
+),
+(
+    3,
+    'Volunteer Orientation Event',
+    'Train and organize new volunteers for upcoming events.',
+    'UnityServe Office',
+    '2026-08-29'
+),
+(
+    3,
+    'Charity Fun Run Setup',
+    'Set up booths and stations for a fundraising event.',
+    'Mesa Riverview Park',
+    '2026-09-05'
+),
+(
+    3,
+    'Community Tutoring Program',
+    'Provide tutoring support for local students.',
+    'Public Library',
+    '2026-09-12'
+);
