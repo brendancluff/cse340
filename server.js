@@ -45,7 +45,9 @@ app.get('/organizations', async (req, res) => {
 
     const title = 'Our Partner Organizations';
 
-    res.render('organizations', { 
+    console.log('ABOUT TO RENDER WITH:', { title, organizations });
+
+    res.render('organizations', {
         title,
         organizations
     });
