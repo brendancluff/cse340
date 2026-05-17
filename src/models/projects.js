@@ -1,4 +1,4 @@
-import pool from "../database/index.js";
+import db from './db.js'
 
 async function getAllProjects() {
   const sql = `
