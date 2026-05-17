@@ -14,8 +14,7 @@ async function getAllProjects() {
       ON p.organization_id = o.organization_id
     ORDER BY p.project_date;
   `;
-
-  const result = await pool.query(sql);
+const result = await db.query(sql)
   return result.rows;
 }
 
