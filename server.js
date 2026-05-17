@@ -3,6 +3,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import projectsModel from "./src/models/projects.js";
+
 
 
 
@@ -54,14 +56,31 @@ app.get('/organizations', async (req, res) => {
 });
 
 app.get('/projects', async (req, res) => {
-    const title = 'Service Projects';
-    res.render('projects', { title });
+    try {
+        const title = 'Service Projects';
+        const projects = await projectsModel.getAllProjects();
+
+        res.render('projects', { title, projects });
+    } catch (error) {
+        console.error('Error loading projects:', error);
+        res.status(500).send('Error loading service projects');
+    }
 });
 
 app.get('/categories', async (req, res) => {
     const title = 'Service Project Categories';
     res.render('categories', { title });
 });
+
+// Test database query
+projectsModel.getAllProjects()
+  .then(data => {
+    console.log("Projects:");
+    console.log(data);
+  })
+  .catch(error => {
+    console.error("Error getting projects:", error);
+  });
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
