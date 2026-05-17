@@ -6,17 +6,21 @@
     <p>Here are a few of our partner organizations:</p>
 
     <ul>
-        <% organizations.forEach(organization => { %>
-            <li>
-                <img 
-                    src="/images/<%= organization.logo_filename %>" 
-                    alt="<%= organization.name %> logo"
-                >
+        <% if (typeof organizations !== 'undefined' && organizations.length > 0) { %>
+            <% organizations.forEach(organization => { %>
+                <li>
+                    <img 
+                        src="/images/<%= organization.logo_filename %>" 
+                        alt="<%= organization.name %> logo"
+                    >
 
-                <strong><%= organization.name %></strong>:
-                <%= organization.contact_email %>
-            </li>
-        <% }); %>
+                    <strong><%= organization.name %></strong>:
+                    <%= organization.contact_email %>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <li>No organizations found.</li>
+        <% } %>
     </ul>
 </main>
 
