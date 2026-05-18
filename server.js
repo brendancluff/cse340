@@ -4,6 +4,7 @@ import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import projectsModel from "./src/models/projects.js";
+import { getAllCategories } from './src/models/categories.js';
 
 
 
@@ -68,8 +69,10 @@ app.get('/projects', async (req, res) => {
 });
 
 app.get('/categories', async (req, res) => {
+    const categories = await getAllCategories();
     const title = 'Service Project Categories';
-    res.render('categories', { title });
+
+    res.render('categories', { title, categories });
 });
 
 // Test database query

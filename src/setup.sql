@@ -169,3 +169,65 @@ VALUES
     'Public Library',
     '2026-09-12'
 );
+
+-- ========================================
+-- Categories Table
+-- ========================================
+CREATE TABLE categories (
+  category_id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Project Categories Junction Table
+-- ========================================
+CREATE TABLE project_categories (
+  project_id INTEGER NOT NULL,
+  category_id INTEGER NOT NULL,
+
+  CONSTRAINT pk_project_categories
+    PRIMARY KEY (project_id, category_id),
+
+  CONSTRAINT fk_project_categories_project
+    FOREIGN KEY (project_id)
+    REFERENCES projects(project_id)
+    ON DELETE CASCADE,
+
+  CONSTRAINT fk_project_categories_category
+    FOREIGN KEY (category_id)
+    REFERENCES categories(category_id)
+    ON DELETE CASCADE
+);
+
+-- ========================================
+-- Insert sample data: Categories
+-- ========================================
+INSERT INTO categories (name)
+VALUES
+  ('Construction'),
+  ('Environment'),
+  ('Education'),
+  ('Food Support'),
+  ('Volunteer Training');
+
+-- ========================================
+-- Associate projects with categories
+-- ========================================
+INSERT INTO project_categories (project_id, category_id)
+VALUES
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (4, 1),
+  (4, 2),
+  (5, 2),
+  (6, 2),
+  (7, 2),
+  (8, 4),
+  (9, 2),
+  (10, 4),
+  (11, 3),
+  (12, 4),
+  (13, 5),
+  (14, 5),
+  (15, 3);
