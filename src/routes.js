@@ -13,6 +13,6 @@ router.get('/projects', projectsController.showProjectsPage);
 router.get('/project/:id', projectsController.showProjectDetailsPage);
 
 router.get('/categories', categoriesController.showCategoriesPage);
-// router.get('/category/:id', categoriesController.showCategoryDetailsPage);
+router.get('/category/:id', categoriesController.showCategoryDetailsPage);
 
 export default router;

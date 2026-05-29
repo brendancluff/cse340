@@ -19,4 +19,16 @@
   <a href="/projects">Back to Service Projects</a>
 </p>
 
+<h2>Categories</h2>
+
+<ul>
+    <% categories.forEach(category => { %>
+        <li>
+            <a href="/category/<%= category.category_id %>">
+                <%= category.name %>
+            </a>
+        </li>
+    <% }) %>
+</ul>
+
 <%- include('partials/footer') %>

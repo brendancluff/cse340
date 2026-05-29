@@ -19,6 +19,22 @@ async function getAllProjects() {
     return result.rows;
 }
 
+async function getCategoriesByProjectId(projectId) {
+    const query = `
+        SELECT
+            c.category_id,
+            c.name
+        FROM category c
+        JOIN project_category pc
+            ON c.category_id = pc.category_id
+        WHERE pc.project_id = $1
+        ORDER BY c.name;
+    `;
+
+    const result = await db.query(query, [projectId]);
+    return result.rows;
+}
+
 async function getProjectsByOrganizationId(organizationId) {
     const query = `
         SELECT
@@ -89,5 +105,6 @@ export default {
     getAllProjects,
     getProjectsByOrganizationId,
     getUpcomingProjects,
-    getProjectDetails
+    getProjectDetails,
+    getCategoriesByProjectId
 };
