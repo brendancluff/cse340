@@ -1,4 +1,33 @@
 import projectsModel from '../models/projects.js';
+import { getAllOrganizations } from '../models/organizations.js';
+
+async function showEditProjectForm(req, res) {
+  const projectId = req.params.id;
+  const project = await projectsModel.getProjectDetails(projectId);
+  const organizations = await getAllOrganizations();
+
+  res.render('update-project', {
+    title: 'Edit Service Project',
+    project,
+    organizations
+  });
+}
+
+async function processEditProjectForm(req, res) {
+  const projectId = req.params.id;
+  const { title, description, location, project_date, organization_id } = req.body;
+
+  await projectsModel.updateProject(
+    projectId,
+    title,
+    description,
+    location,
+    project_date,
+    organization_id
+  );
+
+  res.redirect(`/project/${projectId}`);
+}
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -26,5 +55,7 @@ async function showProjectDetailsPage(req, res) {
 
 export default {
     showProjectsPage,
-    showProjectDetailsPage
+    showProjectDetailsPage,
+    showEditProjectForm,
+    processEditProjectForm
 };

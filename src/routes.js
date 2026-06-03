@@ -14,5 +14,7 @@ router.get('/project/:id', projectsController.showProjectDetailsPage);
 
 router.get('/categories', categoriesController.showCategoriesPage);
 router.get('/category/:id', categoriesController.showCategoryDetailsPage);
+router.get('/edit-project/:id', projectsController.showEditProjectForm);
+router.post('/edit-project/:id', projectsController.processEditProjectForm);
 
 export default router;
