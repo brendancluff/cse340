@@ -102,7 +102,7 @@ async function getProjectDetails(id) {
 }
 
 async function updateProject(projectId, title, description, location, projectDate, organizationId) {
-  const sql = `
+    const sql = `
     UPDATE projects
     SET title = $1,
         description = $2,
@@ -113,21 +113,58 @@ async function updateProject(projectId, title, description, location, projectDat
     RETURNING *;
   `;
 
-  const result = await db.query(sql, [
+    const result = await db.query(sql, [
+        title,
+        description,
+        location,
+        projectDate,
+        organizationId,
+        projectId
+    ]);
+
+    if (result.rows.length === 0) {
+        throw new Error('Project not found');
+    }
+
+    return result.rows[0];
+}
+
+const createProject = async (
     title,
     description,
     location,
-    projectDate,
-    organizationId,
-    projectId
-  ]);
+    date,
+    organizationId
+) => {
+    const query = `
+    INSERT INTO projects (
+      title,
+      description,
+      location,
+      project_date,
+      organization_id
+    )
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING project_id;
+  `;
 
-  if (result.rows.length === 0) {
-    throw new Error('Project not found');
-  }
+    const queryParams = [
+        title,
+        description,
+        location,
+        date,
+        organizationId
+    ];
 
-  return result.rows[0];
-}
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to create project');
+    }
+
+    return result.rows[0].project_id;
+};
+
 
 export default {
     getAllProjects,
@@ -135,5 +172,6 @@ export default {
     getUpcomingProjects,
     getProjectDetails,
     getCategoriesByProjectId,
-    updateProject
+    updateProject,
+    createProject
 };

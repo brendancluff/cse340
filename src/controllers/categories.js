@@ -1,4 +1,5 @@
 import categoriesModel from '../models/categories.js';
+import projectsModel from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
 const showCategoriesPage = async (req, res) => {
@@ -11,8 +12,8 @@ const showCategoriesPage = async (req, res) => {
 const showCategoryDetailsPage = async (req, res) => {
     const categoryId = req.params.id;
 
-    const category = await categoriesModel.getCategoryDetails(categoryId)
-    const projects = await categoriesModel.getProjectsByCategoryId(categoryId)
+    const category = await categoriesModel.getCategoryDetails(categoryId);
+    const projects = await categoriesModel.getProjectsByCategoryId(categoryId);
 
     res.render('category', {
         title: category.name,
@@ -20,6 +21,7 @@ const showCategoryDetailsPage = async (req, res) => {
         projects
     });
 };
+
 const categoryValidationRules = [
     body('name')
         .trim()
@@ -82,6 +84,38 @@ async function processEditCategoryForm(req, res) {
 
     res.redirect(`/category/${categoryId}`);
 }
+
+const showAssignCategoriesForm = async (req, res) => {
+    const projectId = req.params.projectId;
+
+    const projectDetails = await projectsModel.getProjectDetails(projectId);
+    const categories = await categoriesModel.getAllCategories();
+    const assignedCategories = await projectsModel.getCategoriesByProjectId(projectId);
+
+    res.render('assign-categories', {
+        title: 'Assign Categories to Project',
+        projectId,
+        projectDetails,
+        categories,
+        assignedCategories
+    });
+};
+
+const processAssignCategoriesForm = async (req, res) => {
+    const projectId = req.params.projectId;
+    const selectedCategoryIds = req.body.categoryIds || [];
+
+    const categoryIdsArray = Array.isArray(selectedCategoryIds)
+        ? selectedCategoryIds
+        : [selectedCategoryIds];
+
+    await categoriesModel.updateCategoryAssignments(projectId, categoryIdsArray);
+
+    req.flash('success', 'Categories updated successfully.');
+
+    res.redirect(`/project/${projectId}`);
+};
+
 export default {
     showCategoriesPage,
     showCategoryDetailsPage,
@@ -89,5 +123,7 @@ export default {
     processNewCategoryForm,
     showEditCategoryForm,
     processEditCategoryForm,
+    showAssignCategoriesForm,
+    processAssignCategoriesForm,
     categoryValidationRules
 };

@@ -4,6 +4,7 @@ import organizationsController from './controllers/organizations.js';
 import projectsController from './controllers/projects.js';
 import categoriesController from './controllers/categories.js';
 
+
 const router = express.Router();
 
 router.get('/organizations', organizationsController.showOrganizationsPage);
@@ -28,6 +29,31 @@ router.post(
     '/edit-category/:id',
     categoriesController.categoryValidationRules,
     categoriesController.processEditCategoryForm
+);
+
+router.get('/new-project', projectsController.showNewProjectForm);
+
+router.post(
+  '/new-project',
+  projectsController.projectValidation,
+  projectsController.processNewProjectForm
+);
+
+router.get('/new-organization', organizationsController.showNewOrganizationForm);
+router.post(
+    '/new-organization',
+    organizationsController.organizationValidation,
+    organizationsController.processNewOrganizationForm
+);
+
+router.get(
+  '/assign-categories/:projectId',
+  categoriesController.showAssignCategoriesForm
+);
+
+router.post(
+  '/assign-categories/:projectId',
+  categoriesController.processAssignCategoriesForm
 );
 
 export default router;
