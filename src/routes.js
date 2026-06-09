@@ -16,7 +16,11 @@ router.get('/project/:id', projectsController.showProjectDetailsPage);
 router.get('/categories', categoriesController.showCategoriesPage);
 router.get('/category/:id', categoriesController.showCategoryDetailsPage);
 router.get('/edit-project/:id', projectsController.showEditProjectForm);
-router.post('/edit-project/:id', projectsController.processEditProjectForm);
+router.post(
+  '/edit-project/:id',
+  projectsController.editProjectValidation,
+  projectsController.processEditProjectForm
+);
 router.get('/new-category', categoriesController.showNewCategoryForm);
 router.post(
     '/new-category',
@@ -45,6 +49,15 @@ router.post(
     organizationsController.organizationValidation,
     organizationsController.processNewOrganizationForm
 );
+
+router.get('/edit-organization/:id', organizationsController.showEditOrganizationForm);
+
+router.post(
+  '/edit-organization/:id',
+  organizationsController.organizationValidation,
+  organizationsController.processEditOrganizationForm
+);
+
 
 router.get(
   '/assign-categories/:projectId',
