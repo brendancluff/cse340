@@ -7,6 +7,10 @@ import categoriesController from './controllers/categories.js';
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.redirect('/organizations');
+});
+
 router.get('/organizations', organizationsController.showOrganizationsPage);
 router.get('/organization/:id', organizationsController.showOrganizationDetailsPage);
 
