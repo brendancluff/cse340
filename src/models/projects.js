@@ -24,8 +24,8 @@ async function getCategoriesByProjectId(projectId) {
         SELECT
             c.category_id,
             c.name
-        FROM category c
-        JOIN project_category pc
+        FROM categories c
+        JOIN project_categories pc
             ON c.category_id = pc.category_id
         WHERE pc.project_id = $1
         ORDER BY c.name;
