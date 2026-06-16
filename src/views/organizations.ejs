@@ -1,21 +1,25 @@
 <%- include('partials/header') %>
 
-<main>
-  <h1><%= title %></h1>
+  <main>
+    <h1>
+      <%= title %>
+    </h1>
 
-  <p>
-    <a href="/new-organization">Add a New Organization</a>
-  </p>
+   <% if (user && user.role_name === 'admin') { %>
+  <a href="/new-organization">
+    Add a New Organization
+  </a>
+<% } %>
 
-  <ul>
-    <% organizations.forEach(organization => { %>
-      <li>
-        <a href="/organization/<%= organization.organization_id %>">
-          <%= organization.name %>
-        </a>
-      </li>
-    <% }) %>
-  </ul>
-</main>
+        <ul>
+          <% organizations.forEach(organization=> { %>
+            <li>
+              <a href="/organization/<%= organization.organization_id %>">
+                <%= organization.name %>
+              </a>
+            </li>
+            <% }) %>
+        </ul>
+  </main>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>
