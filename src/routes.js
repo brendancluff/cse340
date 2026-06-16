@@ -3,6 +3,7 @@ import express from 'express';
 import organizationsController from './controllers/organizations.js';
 import projectsController from './controllers/projects.js';
 import categoriesController from './controllers/categories.js';
+
 import {
   showUserRegistrationForm,
   processUserRegistrationForm,
@@ -28,6 +29,18 @@ router.get(
   requireLogin,
   requireRole('admin'),
   showUsersPage
+);
+
+router.post(
+  '/project/:id/volunteer',
+  requireLogin,
+  projectsController.volunteerForProject
+);
+
+router.post(
+  '/project/:id/remove-volunteer',
+  requireLogin,
+  projectsController.removeVolunteerFromProject
 );
 
 router.get('/organizations', organizationsController.showOrganizationsPage);

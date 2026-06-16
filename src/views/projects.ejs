@@ -3,20 +3,19 @@
 <main>
   <h1><%= title %></h1>
 
-  <p>
-<% if (user && user.role_name === 'admin') { %>
-  <a href="/new-project">Add a New Project</a>
-<% } %>  </p>
+  <% if (user && user.role_name === 'admin') { %>
+    <p>
+      <a href="/new-project">Add a New Project</a>
+    </p>
+  <% } %>
 
   <ul>
     <% projects.forEach(project => { %>
       <li>
         <h2>
-         <% if (user && user.role_name === 'admin') { %>
-  <a href="/edit-project/<%= project.project_id %>">
-    Edit Project
-  </a>
-<% } %>
+          <a href="/project/<%= project.project_id %>">
+            <%= project.title %>
+          </a>
         </h2>
 
         <p>
@@ -25,6 +24,12 @@
             <%= project.organization_name %>
           </a>
         </p>
+
+        <% if (user && user.role_name === 'admin') { %>
+          <p>
+            <a href="/edit-project/<%= project.project_id %>">Edit Project</a>
+          </p>
+        <% } %>
       </li>
     <% }) %>
   </ul>

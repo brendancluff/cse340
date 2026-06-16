@@ -1,6 +1,7 @@
 import projectsModel from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
+import volunteersModel from '../models/volunteers.js';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -89,10 +90,20 @@ async function showProjectDetailsPage(req, res) {
   const project = await projectsModel.getProjectDetails(projectId);
   const categories = await projectsModel.getCategoriesByProjectId(projectId);
 
+  let isVolunteering = false;
+
+  if (req.session.accountData) {
+    isVolunteering = await volunteersModel.isUserVolunteering(
+      req.session.accountData.account_id,
+      projectId
+    );
+  }
+
   res.render('project', {
     title: project.title,
     project,
-    categories
+    categories,
+    isVolunteering
   });
 }
 
@@ -127,7 +138,6 @@ const processNewProjectForm = async (req, res) => {
   );
 
   req.flash('success', 'New service project created successfully!');
-
   res.redirect(`/project/${projectId}`);
 };
 
@@ -167,9 +177,28 @@ async function processEditProjectForm(req, res) {
   );
 
   req.flash('success', 'Service project updated successfully!');
-
   res.redirect(`/project/${projectId}`);
 }
+
+const volunteerForProject = async (req, res) => {
+  const projectId = req.params.id;
+  const accountId = req.session.accountData.account_id;
+
+  await volunteersModel.addVolunteer(accountId, projectId);
+
+  req.flash('success', 'You are now volunteering for this project.');
+  res.redirect(`/project/${projectId}`);
+};
+
+const removeVolunteerFromProject = async (req, res) => {
+  const projectId = req.params.id;
+  const accountId = req.session.accountData.account_id;
+
+  await volunteersModel.removeVolunteer(accountId, projectId);
+
+  req.flash('success', 'You have been removed as a volunteer for this project.');
+  res.redirect(req.get('Referrer') || `/project/${projectId}`);
+};
 
 export default {
   showProjectsPage,
@@ -179,5 +208,7 @@ export default {
   showEditProjectForm,
   processEditProjectForm,
   projectValidation,
-  editProjectValidation
+  editProjectValidation,
+  volunteerForProject,
+  removeVolunteerFromProject
 };
