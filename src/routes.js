@@ -9,6 +9,8 @@ import {
   showLoginForm,
   processLoginForm,
   processLogout,
+  requireLogin,
+  showDashboard,
 } from './controllers/users.js';
 
 
@@ -18,6 +20,7 @@ router.get('/', (req, res) => {
   res.redirect('/organizations');
 });
 
+router.get('/dashboard', requireLogin, showDashboard);
 router.get('/organizations', organizationsController.showOrganizationsPage);
 router.get('/organization/:id', organizationsController.showOrganizationDetailsPage);
 
@@ -34,16 +37,16 @@ router.post(
 );
 router.get('/new-category', categoriesController.showNewCategoryForm);
 router.post(
-    '/new-category',
-    categoriesController.categoryValidationRules,
-    categoriesController.processNewCategoryForm
+  '/new-category',
+  categoriesController.categoryValidationRules,
+  categoriesController.processNewCategoryForm
 );
 
 router.get('/edit-category/:id', categoriesController.showEditCategoryForm);
 router.post(
-    '/edit-category/:id',
-    categoriesController.categoryValidationRules,
-    categoriesController.processEditCategoryForm
+  '/edit-category/:id',
+  categoriesController.categoryValidationRules,
+  categoriesController.processEditCategoryForm
 );
 
 router.get('/new-project', projectsController.showNewProjectForm);
@@ -56,9 +59,9 @@ router.post(
 
 router.get('/new-organization', organizationsController.showNewOrganizationForm);
 router.post(
-    '/new-organization',
-    organizationsController.organizationValidation,
-    organizationsController.processNewOrganizationForm
+  '/new-organization',
+  organizationsController.organizationValidation,
+  organizationsController.processNewOrganizationForm
 );
 
 router.get('/edit-organization/:id', organizationsController.showEditOrganizationForm);
