@@ -12,6 +12,7 @@ import {
   requireLogin,
   showDashboard,
   requireRole,
+  showUsersPage,
 } from './controllers/users.js';
 
 const router = express.Router();
@@ -21,6 +22,13 @@ router.get('/', (req, res) => {
 });
 
 router.get('/dashboard', requireLogin, showDashboard);
+
+router.get(
+  '/users',
+  requireLogin,
+  requireRole('admin'),
+  showUsersPage
+);
 
 router.get('/organizations', organizationsController.showOrganizationsPage);
 router.get('/organization/:id', organizationsController.showOrganizationDetailsPage);
