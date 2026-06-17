@@ -1,36 +1,36 @@
 import db from './db.js';
 
-const addVolunteer = async (accountId, projectId) => {
+const addVolunteer = async (userId, projectId) => {
   const query = `
     INSERT INTO project_volunteer (user_id, project_id)
     VALUES ($1, $2)
     ON CONFLICT (user_id, project_id) DO NOTHING;
   `;
 
-  await db.query(query, [accountId, projectId]);
+  await db.query(query, [userId, projectId]);
 };
 
-const removeVolunteer = async (accountId, projectId) => {
+const removeVolunteer = async (userId, projectId) => {
   const query = `
     DELETE FROM project_volunteer
     WHERE user_id = $1 AND project_id = $2;
   `;
 
-  await db.query(query, [accountId, projectId]);
+  await db.query(query, [userId, projectId]);
 };
-user_id
-const isUserVolunteering = async (accountId, projectId) => {
+
+const isUserVolunteering = async (userId, projectId) => {
   const query = `
     SELECT user_id
     FROM project_volunteer
     WHERE user_id = $1 AND project_id = $2;
   `;
 
-  const result = await db.query(query, [accountId, projectId]);
+  const result = await db.query(query, [userId, projectId]);
   return result.rows.length > 0;
 };
 
-const getVolunteerProjectsByUser = async (accountId) => {
+const getVolunteerProjectsByUser = async (userId) => {
   const query = `
     SELECT
       p.project_id,
@@ -47,7 +47,7 @@ const getVolunteerProjectsByUser = async (accountId) => {
     ORDER BY p.project_date ASC;
   `;
 
-  const result = await db.query(query, [accountId]);
+  const result = await db.query(query, [userId]);
   return result.rows;
 };
 
