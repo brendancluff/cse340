@@ -92,9 +92,9 @@ async function showProjectDetailsPage(req, res) {
 
   let isVolunteering = false;
 
-  if (req.session.accountData) {
+  if (req.session.user) {
     isVolunteering = await volunteersModel.isUserVolunteering(
-      req.session.accountData.account_id,
+      req.session.user.user_id,
       projectId
     );
   }
@@ -106,6 +106,26 @@ async function showProjectDetailsPage(req, res) {
     isVolunteering
   });
 }
+
+const volunteerForProject = async (req, res) => {
+  const projectId = req.params.id;
+  const userId = req.session.user.user_id;
+
+  await volunteersModel.addVolunteer(userId, projectId);
+
+  req.flash('success', 'You are now volunteering for this project.');
+  res.redirect(`/project/${projectId}`);
+};
+
+const removeVolunteerFromProject = async (req, res) => {
+  const projectId = req.params.id;
+  const userId = req.session.user.user_id;
+
+  await volunteersModel.removeVolunteer(userId, projectId);
+
+  req.flash('success', 'You have been removed as a volunteer for this project.');
+  res.redirect(req.get('Referrer') || `/project/${projectId}`);
+};
 
 const showNewProjectForm = async (req, res) => {
   const organizations = await getAllOrganizations();
@@ -179,26 +199,6 @@ async function processEditProjectForm(req, res) {
   req.flash('success', 'Service project updated successfully!');
   res.redirect(`/project/${projectId}`);
 }
-
-const volunteerForProject = async (req, res) => {
-  const projectId = req.params.id;
-  const accountId = req.session.accountData.account_id;
-
-  await volunteersModel.addVolunteer(accountId, projectId);
-
-  req.flash('success', 'You are now volunteering for this project.');
-  res.redirect(`/project/${projectId}`);
-};
-
-const removeVolunteerFromProject = async (req, res) => {
-  const projectId = req.params.id;
-  const accountId = req.session.accountData.account_id;
-
-  await volunteersModel.removeVolunteer(accountId, projectId);
-
-  req.flash('success', 'You have been removed as a volunteer for this project.');
-  res.redirect(req.get('Referrer') || `/project/${projectId}`);
-};
 
 export default {
   showProjectsPage,
