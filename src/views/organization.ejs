@@ -2,11 +2,13 @@
 
 <h1><%= organizationDetails.name %></h1>
 
-<p>
-  <a href="/edit-organization/<%= organizationDetails.organization_id %>">
-    Edit Organization
-  </a>
-</p>
+<% if (user && user.role_name === 'admin') { %>
+  <p>
+    <a href="/edit-organization/<%= organizationDetails.organization_id %>">
+      Edit Organization
+    </a>
+  </p>
+<% } %>
 
 <% if (organizationDetails.logo_filename) { %>
   <img
